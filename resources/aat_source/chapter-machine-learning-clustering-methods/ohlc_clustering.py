@@ -5,14 +5,18 @@ import datetime
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.finance import candlestick_ohlc
+
+# from matplotlib.finance import candlestick_ohlc
+
 import matplotlib.dates as mdates
 from matplotlib.dates import (
     DateFormatter, WeekdayLocator, DayLocator, MONDAY
 )
 import numpy as np
 import pandas as pd
-import pandas_datareader.data as web
+
+# import pandas_datareader.data as web
+
 from sklearn.cluster import KMeans
 
 
@@ -23,7 +27,8 @@ def get_open_normalised_prices(symbol, start, end):
     from Yahoo Finance. That is, it creates High/Open, Low/Open 
     and Close/Open columns.
     """
-    df = web.DataReader(symbol, "yahoo", start, end)
+    # df = web.DataReader(symbol, "yahoo", start, end)
+    df = None
     df["H/O"] = df["High"]/df["Open"]
     df["L/O"] = df["Low"]/df["Open"]
     df["C/O"] = df["Close"]/df["Open"]

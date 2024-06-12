@@ -1,4 +1,5 @@
 # pymc3_bayes_stochastic_vol.py
+import os
 
 import datetime
 import pprint
@@ -6,7 +7,10 @@ import pprint
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pandas_datareader as pdr
+
+# import pandas_datareader as pdr
+import yfinance as yf
+
 import pymc3 as pm
 from pymc3.distributions.timeseries import GaussianRandomWalk
 import seaborn as sns
@@ -17,7 +21,12 @@ def obtain_plot_amazon_prices_dataframe(start_date, end_date):
     Download, calculate and plot the AMZN logarithmic returns.
     """
     print("Downloading and plotting AMZN log returns...")
-    amzn = pdr.get_data_yahoo("AMZN", start_date, end_date)
+    
+    # amzn = pdr.get_data_yahoo("AMZN", start_date, end_date) # ???
+    amzn_ticker = yf.Ticker("AMZN")
+    amzn = amzn_ticker.history(period="1d", start="1997-05-15", end="2024-06-11")
+    # amzn.to_csv("amzn.csv")
+
     amzn["returns"] = amzn["Adj Close"]/amzn["Adj Close"].shift(1)
     amzn.dropna(inplace=True)
     amzn["log_returns"] = np.log(amzn["returns"])
@@ -26,6 +35,44 @@ def obtain_plot_amazon_prices_dataframe(start_date, end_date):
     plt.show()  
     return amzn
 
+
+def obtain_plot_prices_dataframe(ticker, max_hist, req_hist):
+    if not os.path.exists("data"):
+        os.makedirs("data")
+    
+    max_start, max_end = max_hist.split(" : ")
+    req_start, req_end = req_hist.split(" : ")
+    
+    csv_file = f"data/{ticker}.csv"
+    
+    if not os.path.isfile(csv_file):
+        print(f"Downloading {ticker} maximum history data...")
+        ticker_data = yf.Ticker(ticker)
+        data = ticker_data.history(period="1d", start=max_start, end=max_end)
+        data.to_csv(csv_file)
+    else:
+        print(f"Reading {ticker} data from file...")
+        data = pd.read_csv(csv_file, index_col="Date", parse_dates=True)
+        last_date_in_file = data.index[-1].strftime('%Y-%m-%d')
+        
+        if req_end > last_date_in_file:
+            print(f"Updating {ticker} data to cover up to {req_end}...")
+            ticker_data = yf.Ticker(ticker)
+            new_data = ticker_data.history(period="1d", start=last_date_in_file, end=req_end)
+            new_data.index.name = "Date"  # Ensure the index is named 'Date'
+            new_data.to_csv(csv_file, mode='a', header=False)
+            data = pd.read_csv(csv_file, index_col="Date", parse_dates=True)
+
+    data.index = pd.to_datetime(data.index, utc=True)
+    req_start = pd.to_datetime(req_start, utc=True)
+    req_end = pd.to_datetime(req_end, utc=True)
+    data = data.loc[req_start:req_end]
+    
+    data["returns"] = data["Close"] / data["Close"].shift(1)
+    data.dropna(inplace=True)
+    data["log_returns"] = np.log(data["returns"])
+    
+    return data
 
 def configure_sample_stoch_vol_model(log_returns, samples):
     """
@@ -50,7 +97,9 @@ def configure_sample_stoch_vol_model(log_returns, samples):
 
     print("Fitting the stochastic volatility model...")
     with model:
-        trace = pm.sample(samples)
+        trace = pm.sample(samples, cores=20)
+    print(model.vars)   # [sigma_log__ ~ TransformedDistribution, nu_log__ ~ TransformedDistribution, s ~ GaussianRandomWalk]
+    print("-----------------")
     pm.traceplot(trace, model.vars[:-1])
     plt.show()
 
@@ -71,15 +120,27 @@ def configure_sample_stoch_vol_model(log_returns, samples):
 
 
 if __name__ == "__main__":
-    # State the starting and ending dates of the AMZN returns
-    start_date = datetime.datetime(2006, 1, 1)
-    end_date = datetime.datetime(2015, 12, 31)
+    # # State the starting and ending dates of the AMZN returns
+    # start_date = "2006-01-01"
+    # end_date = "2015-12-31"
 
-    # Obtain and plot the logarithmic returns of Amazon prices
-    amzn_df = obtain_plot_amazon_prices_dataframe(start_date, end_date)
-    log_returns = np.array(amzn_df["log_returns"])
+    # # Obtain and plot the logarithmic returns of Amazon prices
+    # amzn_df = obtain_plot_amazon_prices_dataframe(start_date, end_date)
+    # log_returns = np.array(amzn_df["log_returns"])
 
-    # Configure the stochastic volatility model and carry out
-    # MCMC sampling using NUTS, plotting the trace
+    # ----------------- new code -----------------
+    ticker = "MSFT" # MSFT, AAPL, AMZN, GOOGL, FB
+    max_hist = "1997-05-15 : 2024-06-11"
+    req_hist = "2018-05-15 : 2023-05-15"
+    df = obtain_plot_prices_dataframe(ticker, max_hist, req_hist)
+
+    # # Plot the log returns
+    # df["log_returns"].plot(linewidth=0.5)
+    # plt.title(f"Log Returns of {ticker}")
+    # plt.show()
+
+    log_returns = np.array(df["log_returns"])
+
+    # Configure the stochastic volatility model and carry out MCMC sampling using NUTS, plotting the trace
     samples = 2000
     configure_sample_stoch_vol_model(log_returns, samples)
