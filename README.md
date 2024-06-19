@@ -24,6 +24,10 @@ Explain Time Series and Time Series Analysis to a 10 year old child
 
 Please summarize so that a 10 year old child can understand (remember to divide it into small ideas) the following passage
 
+How to properly understand "______________________". What does "______________________" mean? Explain it so that even middle school students can understand
+
+Refine this question "Please explain the technique of "asking questions to clarify thinking" so that a middle school child can understand. and give 5 examples of how to ask this question." Just answer in "", don't write any text that's not really related like " how about " or " this version is ... "
+
 # Introduction
 
 ## The Hunt for Alpha
