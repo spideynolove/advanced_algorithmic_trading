@@ -75,7 +75,8 @@ There are three main tools these researchers use:
 
 ### "Distance-based (KNN with dynamic time warping)" 
 
-Imagine you have a bunch of songs, and you want to find songs that are similar to your favorite one, not just in melody but also in rhythm. Dynamic time warping (DTW) helps us measure how similar two songs are in terms of their rhythms, even if they're not exactly the same length or speed.
+- Imagine you have a bunch of songs, and you want to find songs that are similar to your favorite one, not just in melody but also in rhythm. 
+- Dynamic time warping (DTW) helps us measure how similar two songs are in terms of their rhythms, even if they're not exactly the same length or speed.
 
 1. **Measuring Song Rhythms**: DTW looks at how two songs' rhythms match up. It doesn't care if one song is faster or slower or if they have pauses in different places. It tries to find the best way to match their rhythms by stretching or compressing parts of the songs as needed.
 
@@ -85,7 +86,8 @@ Imagine you have a bunch of songs, and you want to find songs that are similar t
 
 ### Interval-based (TimeSeriesForest)
 
-Imagine you have a collection of temperature readings taken every hour throughout the day. Each reading tells you how warm or cold it is at that specific time. Now, you want to use these readings to figure out if the temperature is going to stay the same or change in a predictable way.
+- Imagine you have a collection of temperature readings taken every hour throughout the day. Each reading tells you how warm or cold it is at that specific time. 
+- You want to use these readings to figure out if the temperature is going to stay the same or change in a predictable way.
 
 1. **Understanding Time Intervals**: TimeSeriesForest looks at these temperature readings over time in intervals—like every hour or every day. Instead of just looking at one temperature at a time, it considers how temperatures change over these intervals.
 
@@ -97,5 +99,41 @@ Imagine you have a collection of temperature readings taken every hour throughou
 
 ### Dictionary-based (BOSS, cBOSS)
 
+- Imagine you have a big book that lists different patterns of behavior for animals. Each page in the book describes how an animal behaves in certain situations—like how a dog might bark when it sees a stranger or how a cat might purr when it's happy.
+- BOSS (Bag of Symbolic Suffixes) and cBOSS (complementary BOSS) work in a similar way but with data instead of animal behaviors. 
+
+1. **Creating a Dictionary**: BOSS and cBOSS first create a dictionary, which is like a big book of patterns. Instead of animal behaviors, this dictionary contains patterns found in data—like patterns in stock prices, heart rates over time, or any other data that changes.
+
+2. **Matching Patterns**: When new data comes in, BOSS and cBOSS compare this data to the patterns in their dictionary. They look for similarities or matches between the new data and the patterns they've learned.
+
+3. **Making Predictions or Decisions**: Based on these matches, BOSS and cBOSS can make predictions or decisions. For example, if they see a pattern in heart rate data that matches a pattern they've seen before when someone was exercising, they might predict that the person is exercising again.
+
+4. **Why It's Useful**: This method helps us understand and predict how data might change over time. It's like having a library of past data patterns that we can use to recognize and respond to similar patterns in new data.
 
 ### Frequency-based (RISE — like TimeSeriesForest but with other features)
+
+- Imagine you have a list of how many times your friends text you each day. Some days, you get a lot of texts; other days, not as many. 
+- RISE (Random Interval Spectral Ensemble) is like looking at these texting patterns over time to see if there's a trend or pattern.
+
+1. **Counting Frequencies**: RISE looks at how often things happen over time. Instead of just looking at what happens each day, it counts how frequently events occur—like how many texts you receive in an hour, or how many sales happen in a store each day.
+
+2. **Finding Patterns**: Once RISE counts these frequencies, it tries to find patterns in how often things happen. For example, it might notice that you tend to get more texts in the evening after school than in the morning.
+
+3. **Using Other Features**: Unlike simpler methods, RISE also looks at other features or characteristics that might affect these frequencies. For instance, it could consider if your friends text more on weekends than weekdays, or if there are certain times of year when texts increase, like around birthdays.
+
+4. **Predicting Future Events**: By understanding these patterns and features, RISE can predict what might happen in the future. For example, if it sees a pattern where texts increase around exam time, it might predict you'll receive more texts during the next exam period.
+
+5. **Why It's Useful**: This method helps us understand and predict how often things happen over time, based on patterns and additional information (features). It's like having a smart system that learns from past data to guess what will happen next in terms of frequency.
+
+### Shapelet-based (Shapelet Transform Classifier)
+
+- Imagine you have a bunch of pictures of different animals—cats, dogs, birds, and fish. Each animal has a unique shape or outline that makes it recognizable. 
+- The Shapelet Transform Classifier is like finding special shapes (shapelets) in these pictures that help us tell one animal from another.
+
+1. **Finding Distinctive Shapes (Shapelets)**: The Shapelet Transform Classifier looks for small, distinctive shapes within each picture. These shapes (shapelets) are like unique features that help us distinguish one type of animal from another. For example, a cat might have a shapelet that represents its ears or tail.
+
+2. **Matching Shapelets**: Once it finds these shapelets in the pictures, the classifier tries to match them with new pictures to identify which animal it might be. It compares the shapes it found (like ears or tails) with similar shapes in the new pictures to make a guess.
+
+3. **Making Predictions**: Based on these matches, the classifier can predict which animal is in the new picture. If it finds a shapelet that looks like cat ears, it might predict that the new picture is of a cat.
+
+4. **Why It's Useful**: This method helps us classify or recognize objects based on their shapes. It's like recognizing animals by focusing on specific features (like ears or tails) that make each animal unique. By using shapelets, the classifier can identify patterns that help it make accurate predictions about new pictures.

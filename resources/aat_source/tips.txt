@@ -1,0 +1,6 @@
+# Refresh env before
+pip freeze | xargs pip uninstall -y
+
+# prompt
+
+What is "________________________________________"? Explain it so that even middle school students can understand.
