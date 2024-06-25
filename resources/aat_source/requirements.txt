@@ -2,3 +2,4 @@ pymc3
 seaborn
 mplfinance
 yfinance[optional]
+p2j
