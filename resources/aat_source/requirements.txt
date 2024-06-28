@@ -1,5 +1,9 @@
+arviz==0.14.0
 pymc3
+# pymc
 seaborn
 mplfinance
 yfinance[optional]
 p2j
+statsmodels
+# bambi

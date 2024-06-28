@@ -3,4 +3,38 @@ pip freeze | xargs pip uninstall -y
 
 # prompt
 
-What is "________________________________________"? Explain it so that even middle school students can understand.
+What is "________________________________________"? Explain it so that even middle school students can understand. Explain in a maximum of 13 bullet points.
+
+# Problems
+
+Time Series Analysis, Bayesian Statistics and Machine Learning exercise
+
+Applying Bayes’ Rule for Bayesian Inference
+
+Bayesian Inference of a Binomial Proportion
+
+Markov Chain Monte Carlo
+
+Bayesian Linear Regression
+
+Bayesian Stochastic Volatility Model
+
+Serial Correlation
+
+Random Walks and White Noise Models
+
+Autoregressive Moving Average Models
+
+Autoregressive Integrated Moving Average Models
+
+Autoregressive Conditional Heteroskedastic Models
+
+Generalised Autoregressive Conditional Heteroskedas- tic Models
+
+Cointegrated Time Series
+
+State Space Models
+
+Kalman Filter
+
+Hidden Markov Models
